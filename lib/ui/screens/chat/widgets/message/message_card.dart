@@ -5,6 +5,7 @@ import 'package:test_messager/ui/resurses/colors.dart';
 import 'package:test_messager/ui/resurses/icons.dart';
 import 'package:test_messager/ui/resurses/text.dart';
 import 'package:test_messager/ui/screens/chat/widgets/message/message_images_card.dart';
+import 'package:test_messager/ui/utils/convert.dart';
 
 class MessageCard extends StatelessWidget {
   final Message message;
@@ -35,7 +36,6 @@ class MessageCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: isMy ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -87,7 +87,7 @@ class MessageCard extends StatelessWidget {
                         children: [
                           const SizedBox(width: 15),
                           Text(
-                            '21:41',
+                            Convert.timeConvert(message.created),
                             style: AppTextStyle.text3.copyWith(
                               color: (isMy ? AppColors.greenDark : AppColors.greyDark)
                                   .withOpacity(0.8),
