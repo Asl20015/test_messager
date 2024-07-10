@@ -4,4 +4,5 @@ class AppIcons {
   static const doubleCheck = 'assets/icons/double_check.svg';
   static const clip = 'assets/icons/clip.svg';
   static const microphone = 'assets/icons/microphone.svg';
+  static const search = 'assets/icons/search.svg';
 }

@@ -12,4 +12,6 @@ class User {
     required this.lastOnline,
     required this.colors,
   });
+
+  String get lettersName => name.split(' ').map((e) => e[0]).join('').toUpperCase();
 }
