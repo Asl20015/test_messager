@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/redux.dart';
 import 'package:test_messager/data/models/message.dart';
 import 'package:test_messager/data/models/message_group.dart';
 import 'package:test_messager/data/models/user.dart';
+import 'package:test_messager/domain/state_manager/chat/action.dart';
+import 'package:test_messager/domain/state_manager/store.dart';
 import 'package:test_messager/ui/screens/chat/widgets/message/message_group_card.dart';
 import 'package:test_messager/ui/screens/chat/widgets/text_field_message.dart';
 import 'package:test_messager/ui/widgets/user_card.dart';
@@ -20,6 +24,15 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  late Store<AppState> _store;
+
+  @override
+  void initState() {
+    super.initState();
+    _store = StoreProvider.of<AppState>(context, listen: false);
+    if (_store.state.chatListState.chats.isEmpty) _store.dispatch(LoadChatListAction());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

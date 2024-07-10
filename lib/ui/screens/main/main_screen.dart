@@ -1,13 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:test_messager/data/data/data_users.dart';
+import 'package:redux/redux.dart';
+import 'package:test_messager/domain/state_manager/chat/action.dart';
+import 'package:test_messager/domain/state_manager/chat/state.dart';
+import 'package:test_messager/domain/state_manager/store.dart';
 import 'package:test_messager/ui/resurses/colors.dart';
 import 'package:test_messager/ui/resurses/icons.dart';
 import 'package:test_messager/ui/resurses/text.dart';
 import 'package:test_messager/ui/widgets/chat_card.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  late Store<AppState> _store;
+
+  @override
+  void initState() {
+    super.initState();
+    _store = StoreProvider.of<AppState>(context, listen: false);
+    if (_store.state.chatListState.chats.isEmpty) _store.dispatch(LoadChatListAction());
+  }
+
+  Future<void> onRefresh() => Future(() => _store.dispatch(LoadChatListAction()));
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +44,20 @@ class MainScreen extends StatelessWidget {
                 ),
               ),
             ),
-            child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              children: [
-                for (var user in DataUsers().users) ChatCard(user: user),
-              ],
+            child: StoreConnector<AppState, ChatListState>(
+              converter: (store) => store.state.chatListState,
+              builder: (context, state) {
+                if (state.isLoading) return const Center(child: CircularProgressIndicator());
+                return RefreshIndicator(
+                  onRefresh: onRefresh,
+                  child: ListView(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    children: [
+                      for (var chat in state.chats) ChatCard(chat: chat),
+                    ],
+                  ),
+                );
+              },
             ),
           ),
         ),

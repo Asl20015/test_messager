@@ -1,22 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:test_messager/data/models/user.dart';
+import 'package:test_messager/data/models/chat.dart';
 import 'package:test_messager/domain/di/get_it_service.dart';
 import 'package:test_messager/ui/resurses/colors.dart';
 import 'package:test_messager/ui/resurses/text.dart';
+import 'package:test_messager/ui/utils/convert.dart';
 import 'package:test_messager/ui/widgets/user_card.dart';
 
 class ChatCard extends StatelessWidget {
-  final User user;
+  final Chat chat;
 
   const ChatCard({
     super.key,
-    required this.user,
+    required this.chat,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => getItService.navigatorService.onChat(user: user),
+      onTap: () => getItService.navigatorService.onChat(user: chat.user),
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 10),
         decoration: const BoxDecoration(
@@ -33,20 +34,31 @@ class ChatCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             UserCard(
-              user: user,
-              content: Text(
-                'Сообщение',
+              user: chat.user,
+              content: Row(
+                children: [
+                  if (chat.lastMessage == null)
+                    const Icon(
+                      Icons.add,
+                      size: 16,
+                      color: AppColors.primary,
+                    ),
+                  Text(
+                    chat.lastMessage == null ? 'Новый чат' : chat.lastMessage!.content,
+                    style: AppTextStyle.text3.copyWith(
+                      color: AppColors.greyMedium,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (chat.lastMessage != null)
+              Text(
+                Convert.dateConvert(chat.lastMessage!.created),
                 style: AppTextStyle.text3.copyWith(
                   color: AppColors.greyMedium,
                 ),
               ),
-            ),
-            Text(
-              'Вчера',
-              style: AppTextStyle.text3.copyWith(
-                color: AppColors.greyMedium,
-              ),
-            ),
           ],
         ),
       ),
