@@ -54,6 +54,31 @@ class AppDataBase extends _$AppDataBase {
     }
   }
 
+  Future<Message> createMessage({
+    required String text,
+    required List<String> files,
+    required int companionId,
+  }) async {
+    final companion = MessageTableCompanion(
+      companionId: drift.Value(companionId),
+      isMy: const drift.Value(true),
+      isRead: const drift.Value(false),
+      created: drift.Value(DateTime.now()),
+      content: drift.Value(text),
+    );
+    final id = await into(messageTable).insert(companion);
+    if (files.isNotEmpty) {
+      for (var file in files) {
+        final fileCompanion = FilesTableCompanion(
+          file: drift.Value(file),
+          messageId: drift.Value(id),
+        );
+        await into(filesTable).insert(fileCompanion);
+      }
+    }
+    return getMessageFromId(messageId: id);
+  }
+
   Future<List<Message>> getListMessage({required int userId}) async {
     final messages = await (select(messageTable)
           ..where(
@@ -74,6 +99,11 @@ class AppDataBase extends _$AppDataBase {
     if (messages.isEmpty) return null;
     final dto = await getMessage(message: messages.last);
     return dto;
+  }
+
+  Future<Message> getMessageFromId({required int messageId}) async {
+    final messages = await (select(messageTable)..where((tbl) => tbl.id.isIn([messageId]))).get();
+    return getMessage(message: messages.first);
   }
 
   //Files

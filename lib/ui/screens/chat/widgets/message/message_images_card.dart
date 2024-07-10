@@ -2,14 +2,17 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:test_messager/domain/di/get_it_service.dart';
+import 'package:test_messager/ui/resurses/colors.dart';
 import 'package:test_messager/ui/resurses/text.dart';
 
 class MessageImagesCard extends StatelessWidget {
   final List<String> files;
+  final bool isContextEmpty;
 
   const MessageImagesCard({
     super.key,
     required this.files,
+    required this.isContextEmpty,
   });
 
   @override
@@ -23,15 +26,19 @@ class MessageImagesCard extends StatelessWidget {
             Expanded(
               child: ClipRRect(
                 borderRadius: files.length == 1
-                    ? const BorderRadius.vertical(
-                        top: Radius.circular(19),
-                        bottom: Radius.circular(8),
+                    ? BorderRadius.vertical(
+                        top: const Radius.circular(19),
+                        bottom: Radius.circular(isContextEmpty ? 19 : 8),
                       )
                     : BorderRadius.only(
                         topLeft: const Radius.circular(19),
-                        topRight: const Radius.circular(8),
-                        bottomLeft: const Radius.circular(8),
-                        bottomRight: Radius.circular(files.length > 1 ? 4 : 8),
+                        topRight: Radius.circular(files.length > 1 ? 4 : 8),
+                        bottomLeft: Radius.circular(isContextEmpty ? 19 : 8),
+                        bottomRight: Radius.circular(files.length > 1
+                            ? 4
+                            : isContextEmpty
+                                ? 19
+                                : 8),
                       ),
                 child: _Image(
                   file: files.first,
@@ -46,10 +53,14 @@ class MessageImagesCard extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.only(
-                        topLeft: const Radius.circular(8),
+                        topLeft: const Radius.circular(4),
                         topRight: const Radius.circular(19),
                         bottomLeft: const Radius.circular(4),
-                        bottomRight: Radius.circular(files.length > 2 ? 4 : 8),
+                        bottomRight: Radius.circular(files.length > 2
+                            ? 4
+                            : isContextEmpty
+                                ? 19
+                                : 8),
                       ),
                       child: _Image(
                         file: files[1],
@@ -61,11 +72,11 @@ class MessageImagesCard extends StatelessWidget {
                       Stack(
                         children: [
                           ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(4),
-                              topRight: Radius.circular(4),
-                              bottomLeft: Radius.circular(4),
-                              bottomRight: Radius.circular(8),
+                            borderRadius: BorderRadius.only(
+                              topLeft: const Radius.circular(4),
+                              topRight: const Radius.circular(4),
+                              bottomLeft: const Radius.circular(4),
+                              bottomRight: Radius.circular(isContextEmpty ? 19 : 8),
                             ),
                             child: _Image(
                               file: files[2],
@@ -126,13 +137,42 @@ class _Image extends StatelessWidget {
       return Image.file(
         File(file),
         height: height,
+        width: double.infinity,
         fit: BoxFit.cover,
       );
     }
     return Image.network(
       file,
       height: height,
+      width: double.infinity,
       fit: BoxFit.cover,
+      loadingBuilder: (_, __, ___) {
+        return Container(
+          height: height,
+          width: double.infinity,
+          color: AppColors.greyRaw,
+          child: const Center(
+            child: SizedBox(
+              width: 20,
+              height: 20,
+              child: CircularProgressIndicator(color: AppColors.primary),
+            ),
+          ),
+        );
+      },
+      errorBuilder: (_, __, ___) {
+        return Container(
+          height: height,
+          width: double.infinity,
+          color: AppColors.greyRaw,
+          child: const Center(
+            child: Icon(
+              Icons.error_outline,
+              color: Colors.red,
+            ),
+          ),
+        );
+      },
     );
   }
 }

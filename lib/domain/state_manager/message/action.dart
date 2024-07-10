@@ -18,6 +18,12 @@ class ShowMessageListAction extends MessageListAction {
   });
 }
 
+class AddMessageListAction extends MessageListAction {
+  final Message message;
+
+  AddMessageListAction({required this.message});
+}
+
 class ErrorMessageListAction extends MessageListAction {
   final String message;
 

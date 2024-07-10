@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 import 'package:redux/redux.dart';
 import 'package:test_messager/data/database/database.dart';
 import 'package:test_messager/data/repositories/message_repository.dart';
+import 'package:test_messager/domain/interactors/message_interactors.dart';
 import 'package:test_messager/domain/repositories/message_repository.dart';
 import 'package:test_messager/domain/services/navigator_service.dart';
 import 'package:test_messager/domain/state_manager/chat/middleware.dart';
@@ -18,6 +19,7 @@ class LocatorService {
   late Store<AppState> store;
 
   late NavigatorService navigatorService;
+  late MessageInteractors messageInteractors;
 
   late MessageRepository messageRepository;
 
@@ -38,10 +40,16 @@ class LocatorService {
       ],
     );
 
+    messageInteractors = MessageInteractors(
+      messageRepository: messageRepository,
+      store: store,
+    );
+
     _register();
   }
 
   void _register() {
     GetIt.I.registerSingleton<NavigatorService>(navigatorService);
+    GetIt.I.registerSingleton<MessageInteractors>(messageInteractors);
   }
 }

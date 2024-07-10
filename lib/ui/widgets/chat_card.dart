@@ -51,7 +51,11 @@ class ChatCard extends StatelessWidget {
                     const SizedBox(width: 4),
                   ],
                   Text(
-                    chat.lastMessage == null ? 'Новый чат' : chat.lastMessage!.content,
+                    chat.lastMessage == null
+                        ? 'Новый чат'
+                        : chat.lastMessage!.content == ''
+                            ? 'Изображение${(chat.lastMessage!.files ?? []).length > 1 ? ' (${(chat.lastMessage!.files ?? []).length})' : ''}'
+                            : chat.lastMessage!.content,
                     style: AppTextStyle.text3.copyWith(
                       color: AppColors.greyMedium,
                     ),

@@ -6,9 +6,24 @@ final messageListReducer = combineReducers<MessageListState>([
   TypedReducer<MessageListState, LoadMessageListAction>(_loadMessageList).call,
   TypedReducer<MessageListState, ShowMessageListAction>(_showMessageList).call,
   TypedReducer<MessageListState, ErrorMessageListAction>(_errorMessageList).call,
+  TypedReducer<MessageListState, AddMessageListAction>(_addMessageList).call,
 ]);
 
 // Message
+MessageListState _addMessageList(
+  MessageListState state,
+  AddMessageListAction action,
+) {
+  final messages = state.messages.toList();
+  messages.add(action.message);
+  messages.sort((a, b) => b.created.compareTo(a.created));
+  return state.copyWith(
+    isLoading: false,
+    isError: false,
+    messages: messages,
+  );
+}
+
 MessageListState _loadMessageList(
   MessageListState state,
   LoadMessageListAction action,

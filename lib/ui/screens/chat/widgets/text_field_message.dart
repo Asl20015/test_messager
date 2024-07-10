@@ -7,7 +7,12 @@ import 'package:test_messager/ui/resurses/text.dart';
 import 'package:test_messager/ui/widgets/file_container.dart';
 
 class TextFieldMessage extends StatefulWidget {
-  const TextFieldMessage({super.key});
+  final int userId;
+
+  const TextFieldMessage({
+    super.key,
+    required this.userId,
+  });
 
   @override
   State<TextFieldMessage> createState() => _TextFieldMessageState();
@@ -21,6 +26,7 @@ class _TextFieldMessageState extends State<TextFieldMessage> {
     super.initState();
     textFieldChatController = TextFieldChatController(
       setState: () => setState(() {}),
+      userId: widget.userId,
     );
   }
 
@@ -111,6 +117,7 @@ class _TextFieldMessageState extends State<TextFieldMessage> {
                   ),
                 ),
                 GestureDetector(
+                  onTap: textFieldChatController.sendMessage,
                   child: Container(
                     width: 48,
                     height: 48,

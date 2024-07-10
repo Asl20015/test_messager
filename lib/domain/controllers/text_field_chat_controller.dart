@@ -11,8 +11,12 @@ class TextFieldChatController {
   bool isMicrophone = true;
   final Function() setState;
   final _filesController = FilesController();
+  final int userId;
 
-  TextFieldChatController({required this.setState});
+  TextFieldChatController({
+    required this.setState,
+    required this.userId,
+  });
 
   void addFile() {
     if (getItService.navigatorService.navigatorKey.currentContext == null) return;
@@ -25,6 +29,7 @@ class TextFieldChatController {
             final file = await _filesController.getImage(source);
             if (file != null) {
               files.add(file);
+              switchButtonSend('');
               setState();
             }
           },
@@ -32,6 +37,7 @@ class TextFieldChatController {
             final file = await _filesController.getFile();
             if (file != null) {
               files.add(file);
+              switchButtonSend('');
               setState();
             }
           },
@@ -42,6 +48,7 @@ class TextFieldChatController {
 
   void deleteFile(int index) {
     files.removeAt(index);
+    switchButtonSend('');
     setState();
   }
 
@@ -51,9 +58,21 @@ class TextFieldChatController {
       setState();
     }
 
-    if (messageController.text.isNotEmpty && files.isNotEmpty && isMicrophone) {
+    if ((messageController.text.isNotEmpty || files.isNotEmpty) && isMicrophone) {
       isMicrophone = false;
       setState();
     }
+  }
+
+  void sendMessage() async {
+    if (messageController.text == '' && files.isEmpty) return;
+    await getItService.messageInteractors.createMessage(
+      content: messageController.text,
+      userId: userId,
+      files: files.map((e) => e.path).toList(),
+    );
+    messageController.clear();
+    files.clear();
+    setState();
   }
 }

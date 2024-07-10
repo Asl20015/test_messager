@@ -96,7 +96,12 @@ class _ChatScreenState extends State<ChatScreen> {
           );
         },
       ),
-      bottomNavigationBar: const TextFieldMessage(),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.only(
+          bottom: MediaQuery.of(context).viewInsets.bottom,
+        ),
+        child: TextFieldMessage(userId: widget.user.id),
+      ),
     );
   }
 }

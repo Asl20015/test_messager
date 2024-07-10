@@ -27,4 +27,17 @@ class LocalMessageRepository implements MessageRepository {
     }
     return database.getLastMessage(userId: userId);
   }
+
+  @override
+  Future<Message> createMessage({
+    required int userId,
+    required String content,
+    required List<String> files,
+  }) {
+    return database.createMessage(
+      text: content,
+      files: files,
+      companionId: userId,
+    );
+  }
 }

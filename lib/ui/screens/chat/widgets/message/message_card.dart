@@ -5,7 +5,7 @@ import 'package:test_messager/ui/resurses/colors.dart';
 import 'package:test_messager/ui/resurses/icons.dart';
 import 'package:test_messager/ui/resurses/text.dart';
 import 'package:test_messager/ui/screens/chat/widgets/message/message_images_card.dart';
-import 'package:test_messager/ui/utils/convert.dart';
+import 'package:test_messager/ui/screens/chat/widgets/message/message_status.dart';
 
 class MessageCard extends StatelessWidget {
   final Message message;
@@ -54,7 +54,7 @@ class MessageCard extends StatelessWidget {
               top: !haveFiles ? 12 : 4,
               right: 4,
               left: 4,
-              bottom: 12,
+              bottom: message.content != '' ? 12 : 4,
             ),
             decoration: BoxDecoration(
               borderRadius: message.isMy ? borderForMyMessage : borderForUserMessage,
@@ -64,51 +64,42 @@ class MessageCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 if (haveFiles) ...[
-                  MessageImagesCard(files: message.files!),
-                  const SizedBox(height: 8),
-                ],
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                  child: Wrap(
-                    crossAxisAlignment: WrapCrossAlignment.end,
-                    alignment: WrapAlignment.end,
+                  Stack(
+                    alignment: Alignment.bottomRight,
                     children: [
-                      Text(
-                        message.content,
-                        style: AppTextStyle.text2.copyWith(
-                          color: message.isMy ? AppColors.greenDark : AppColors.greyDark,
-                        ),
+                      MessageImagesCard(
+                        files: message.files!,
+                        isContextEmpty: message.content.isEmpty,
                       ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const SizedBox(width: 15),
-                          Text(
-                            Convert.timeConvert(message.created),
-                            style: AppTextStyle.text3.copyWith(
-                              color: (message.isMy ? AppColors.greenDark : AppColors.greyDark)
-                                  .withOpacity(0.8),
-                            ),
+                      if (message.content.isEmpty)
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: MessageStatus(
+                            message: message,
+                            color: Colors.white,
                           ),
-                          if (message.isMy) ...[
-                            const SizedBox(width: 5),
-                            Padding(
-                              padding: const EdgeInsets.only(bottom: 5),
-                              child: SvgPicture.asset(
-                                message.isRead ? AppIcons.doubleCheck : AppIcons.check,
-                                colorFilter: const ColorFilter.mode(
-                                  AppColors.greenDark,
-                                  BlendMode.srcIn,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
+                        ),
                     ],
                   ),
-                ),
+                  if (message.content.isNotEmpty) const SizedBox(height: 8),
+                ],
+                if (message.content != '')
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.end,
+                      alignment: WrapAlignment.end,
+                      children: [
+                        Text(
+                          message.content,
+                          style: AppTextStyle.text2.copyWith(
+                            color: message.isMy ? AppColors.greenDark : AppColors.greyDark,
+                          ),
+                        ),
+                        MessageStatus(message: message),
+                      ],
+                    ),
+                  ),
               ],
             ),
           ),
