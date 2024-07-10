@@ -9,6 +9,7 @@ class MessageListState with _$MessageListState {
     @Default(false) bool isLoading,
     @Default(false) bool isError,
     @Default('') String errorMessage,
+    int? companionId,
     @Default([]) List<Message> messages,
   ]) = _MessageListState;
 }

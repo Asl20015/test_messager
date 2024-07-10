@@ -7,8 +7,9 @@ class DataMessageUserThree implements DataMessage {
     Message(
       id: 786785,
       content: 'Привет',
-      userId: -1,
+      companionId: 3,
       isRead: true,
+      isMy: false,
       created: DateTime(
         2024,
         05,
@@ -20,8 +21,9 @@ class DataMessageUserThree implements DataMessage {
     Message(
       id: 655242,
       content: 'Привет',
-      userId: 3,
+      companionId: 3,
       isRead: true,
+      isMy: true,
       created: DateTime(
         2024,
         05,

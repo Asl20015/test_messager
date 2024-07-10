@@ -42,7 +42,14 @@ class ChatCard extends StatelessWidget {
                       Icons.add,
                       size: 16,
                       color: AppColors.primary,
+                    )
+                  else if (chat.lastMessage!.isMy) ...[
+                    const Text(
+                      'Вы:',
+                      style: AppTextStyle.text3,
                     ),
+                    const SizedBox(width: 4),
+                  ],
                   Text(
                     chat.lastMessage == null ? 'Новый чат' : chat.lastMessage!.content,
                     style: AppTextStyle.text3.copyWith(

@@ -1,7 +1,10 @@
 class Convert {
   static String onlineConvert(DateTime date) {
     final now = DateTime.now();
-    if (now.difference(date).inMinutes < 5) {
+    if (DateTime(now.year, now.month, now.day)
+            .difference(DateTime(date.year, date.month, date.day))
+            .inMinutes <
+        5) {
       return 'В сети';
     } else {
       String dif = '';
@@ -27,7 +30,9 @@ class Convert {
 
   static String dateConvert(DateTime date) {
     final now = DateTime.now();
-    final days = now.difference(date).inDays;
+    final days = DateTime(now.year, now.month, now.day)
+        .difference(DateTime(date.year, date.month, date.day))
+        .inDays;
     if (days == 0) return 'Сегодня';
     if (days == 1) return 'Вчера';
     if (days == 2) return 'Позавчера';

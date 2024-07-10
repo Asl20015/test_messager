@@ -31,12 +31,12 @@ class $MessageTableTable extends MessageTable
   late final drift.GeneratedColumn<DateTime> created =
       drift.GeneratedColumn<DateTime>('created', aliasedName, false,
           type: DriftSqlType.dateTime, requiredDuringInsert: true);
-  static const drift.VerificationMeta _userIdMeta =
-      const drift.VerificationMeta('userId');
+  static const drift.VerificationMeta _companionIdMeta =
+      const drift.VerificationMeta('companionId');
   @override
-  late final drift.GeneratedColumn<int> userId = drift.GeneratedColumn<int>(
-      'user_id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
+  late final drift.GeneratedColumn<int> companionId =
+      drift.GeneratedColumn<int>('companion_id', aliasedName, false,
+          type: DriftSqlType.int, requiredDuringInsert: true);
   static const drift.VerificationMeta _isReadMeta =
       const drift.VerificationMeta('isRead');
   @override
@@ -46,9 +46,18 @@ class $MessageTableTable extends MessageTable
       requiredDuringInsert: true,
       defaultConstraints:
           GeneratedColumn.constraintIsAlways('CHECK ("is_read" IN (0, 1))'));
+  static const drift.VerificationMeta _isMyMeta =
+      const drift.VerificationMeta('isMy');
+  @override
+  late final drift.GeneratedColumn<bool> isMy = drift.GeneratedColumn<bool>(
+      'is_my', aliasedName, false,
+      type: DriftSqlType.bool,
+      requiredDuringInsert: true,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('CHECK ("is_my" IN (0, 1))'));
   @override
   List<drift.GeneratedColumn> get $columns =>
-      [id, content, created, userId, isRead];
+      [id, content, created, companionId, isRead, isMy];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
@@ -75,17 +84,25 @@ class $MessageTableTable extends MessageTable
     } else if (isInserting) {
       context.missing(_createdMeta);
     }
-    if (data.containsKey('user_id')) {
-      context.handle(_userIdMeta,
-          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    if (data.containsKey('companion_id')) {
+      context.handle(
+          _companionIdMeta,
+          companionId.isAcceptableOrUnknown(
+              data['companion_id']!, _companionIdMeta));
     } else if (isInserting) {
-      context.missing(_userIdMeta);
+      context.missing(_companionIdMeta);
     }
     if (data.containsKey('is_read')) {
       context.handle(_isReadMeta,
           isRead.isAcceptableOrUnknown(data['is_read']!, _isReadMeta));
     } else if (isInserting) {
       context.missing(_isReadMeta);
+    }
+    if (data.containsKey('is_my')) {
+      context.handle(
+          _isMyMeta, isMy.isAcceptableOrUnknown(data['is_my']!, _isMyMeta));
+    } else if (isInserting) {
+      context.missing(_isMyMeta);
     }
     return context;
   }
@@ -102,10 +119,12 @@ class $MessageTableTable extends MessageTable
           .read(DriftSqlType.string, data['${effectivePrefix}content'])!,
       created: attachedDatabase.typeMapping
           .read(DriftSqlType.dateTime, data['${effectivePrefix}created'])!,
-      userId: attachedDatabase.typeMapping
-          .read(DriftSqlType.int, data['${effectivePrefix}user_id'])!,
+      companionId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}companion_id'])!,
       isRead: attachedDatabase.typeMapping
           .read(DriftSqlType.bool, data['${effectivePrefix}is_read'])!,
+      isMy: attachedDatabase.typeMapping
+          .read(DriftSqlType.bool, data['${effectivePrefix}is_my'])!,
     );
   }
 
@@ -120,22 +139,25 @@ class MessageTableData extends drift.DataClass
   final int id;
   final String content;
   final DateTime created;
-  final int userId;
+  final int companionId;
   final bool isRead;
+  final bool isMy;
   const MessageTableData(
       {required this.id,
       required this.content,
       required this.created,
-      required this.userId,
-      required this.isRead});
+      required this.companionId,
+      required this.isRead,
+      required this.isMy});
   @override
   Map<String, drift.Expression> toColumns(bool nullToAbsent) {
     final map = <String, drift.Expression>{};
     map['id'] = drift.Variable<int>(id);
     map['content'] = drift.Variable<String>(content);
     map['created'] = drift.Variable<DateTime>(created);
-    map['user_id'] = drift.Variable<int>(userId);
+    map['companion_id'] = drift.Variable<int>(companionId);
     map['is_read'] = drift.Variable<bool>(isRead);
+    map['is_my'] = drift.Variable<bool>(isMy);
     return map;
   }
 
@@ -144,8 +166,9 @@ class MessageTableData extends drift.DataClass
       id: drift.Value(id),
       content: drift.Value(content),
       created: drift.Value(created),
-      userId: drift.Value(userId),
+      companionId: drift.Value(companionId),
       isRead: drift.Value(isRead),
+      isMy: drift.Value(isMy),
     );
   }
 
@@ -156,8 +179,9 @@ class MessageTableData extends drift.DataClass
       id: serializer.fromJson<int>(json['id']),
       content: serializer.fromJson<String>(json['content']),
       created: serializer.fromJson<DateTime>(json['created']),
-      userId: serializer.fromJson<int>(json['userId']),
+      companionId: serializer.fromJson<int>(json['companionId']),
       isRead: serializer.fromJson<bool>(json['isRead']),
+      isMy: serializer.fromJson<bool>(json['isMy']),
     );
   }
   @override
@@ -167,8 +191,9 @@ class MessageTableData extends drift.DataClass
       'id': serializer.toJson<int>(id),
       'content': serializer.toJson<String>(content),
       'created': serializer.toJson<DateTime>(created),
-      'userId': serializer.toJson<int>(userId),
+      'companionId': serializer.toJson<int>(companionId),
       'isRead': serializer.toJson<bool>(isRead),
+      'isMy': serializer.toJson<bool>(isMy),
     };
   }
 
@@ -176,14 +201,16 @@ class MessageTableData extends drift.DataClass
           {int? id,
           String? content,
           DateTime? created,
-          int? userId,
-          bool? isRead}) =>
+          int? companionId,
+          bool? isRead,
+          bool? isMy}) =>
       MessageTableData(
         id: id ?? this.id,
         content: content ?? this.content,
         created: created ?? this.created,
-        userId: userId ?? this.userId,
+        companionId: companionId ?? this.companionId,
         isRead: isRead ?? this.isRead,
+        isMy: isMy ?? this.isMy,
       );
   @override
   String toString() {
@@ -191,14 +218,16 @@ class MessageTableData extends drift.DataClass
           ..write('id: $id, ')
           ..write('content: $content, ')
           ..write('created: $created, ')
-          ..write('userId: $userId, ')
-          ..write('isRead: $isRead')
+          ..write('companionId: $companionId, ')
+          ..write('isRead: $isRead, ')
+          ..write('isMy: $isMy')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, content, created, userId, isRead);
+  int get hashCode =>
+      Object.hash(id, content, created, companionId, isRead, isMy);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -206,46 +235,53 @@ class MessageTableData extends drift.DataClass
           other.id == this.id &&
           other.content == this.content &&
           other.created == this.created &&
-          other.userId == this.userId &&
-          other.isRead == this.isRead);
+          other.companionId == this.companionId &&
+          other.isRead == this.isRead &&
+          other.isMy == this.isMy);
 }
 
 class MessageTableCompanion extends drift.UpdateCompanion<MessageTableData> {
   final drift.Value<int> id;
   final drift.Value<String> content;
   final drift.Value<DateTime> created;
-  final drift.Value<int> userId;
+  final drift.Value<int> companionId;
   final drift.Value<bool> isRead;
+  final drift.Value<bool> isMy;
   const MessageTableCompanion({
     this.id = const drift.Value.absent(),
     this.content = const drift.Value.absent(),
     this.created = const drift.Value.absent(),
-    this.userId = const drift.Value.absent(),
+    this.companionId = const drift.Value.absent(),
     this.isRead = const drift.Value.absent(),
+    this.isMy = const drift.Value.absent(),
   });
   MessageTableCompanion.insert({
     this.id = const drift.Value.absent(),
     required String content,
     required DateTime created,
-    required int userId,
+    required int companionId,
     required bool isRead,
+    required bool isMy,
   })  : content = drift.Value(content),
         created = drift.Value(created),
-        userId = drift.Value(userId),
-        isRead = drift.Value(isRead);
+        companionId = drift.Value(companionId),
+        isRead = drift.Value(isRead),
+        isMy = drift.Value(isMy);
   static drift.Insertable<MessageTableData> custom({
     drift.Expression<int>? id,
     drift.Expression<String>? content,
     drift.Expression<DateTime>? created,
-    drift.Expression<int>? userId,
+    drift.Expression<int>? companionId,
     drift.Expression<bool>? isRead,
+    drift.Expression<bool>? isMy,
   }) {
     return drift.RawValuesInsertable({
       if (id != null) 'id': id,
       if (content != null) 'content': content,
       if (created != null) 'created': created,
-      if (userId != null) 'user_id': userId,
+      if (companionId != null) 'companion_id': companionId,
       if (isRead != null) 'is_read': isRead,
+      if (isMy != null) 'is_my': isMy,
     });
   }
 
@@ -253,14 +289,16 @@ class MessageTableCompanion extends drift.UpdateCompanion<MessageTableData> {
       {drift.Value<int>? id,
       drift.Value<String>? content,
       drift.Value<DateTime>? created,
-      drift.Value<int>? userId,
-      drift.Value<bool>? isRead}) {
+      drift.Value<int>? companionId,
+      drift.Value<bool>? isRead,
+      drift.Value<bool>? isMy}) {
     return MessageTableCompanion(
       id: id ?? this.id,
       content: content ?? this.content,
       created: created ?? this.created,
-      userId: userId ?? this.userId,
+      companionId: companionId ?? this.companionId,
       isRead: isRead ?? this.isRead,
+      isMy: isMy ?? this.isMy,
     );
   }
 
@@ -276,11 +314,14 @@ class MessageTableCompanion extends drift.UpdateCompanion<MessageTableData> {
     if (created.present) {
       map['created'] = drift.Variable<DateTime>(created.value);
     }
-    if (userId.present) {
-      map['user_id'] = drift.Variable<int>(userId.value);
+    if (companionId.present) {
+      map['companion_id'] = drift.Variable<int>(companionId.value);
     }
     if (isRead.present) {
       map['is_read'] = drift.Variable<bool>(isRead.value);
+    }
+    if (isMy.present) {
+      map['is_my'] = drift.Variable<bool>(isMy.value);
     }
     return map;
   }
@@ -291,8 +332,9 @@ class MessageTableCompanion extends drift.UpdateCompanion<MessageTableData> {
           ..write('id: $id, ')
           ..write('content: $content, ')
           ..write('created: $created, ')
-          ..write('userId: $userId, ')
-          ..write('isRead: $isRead')
+          ..write('companionId: $companionId, ')
+          ..write('isRead: $isRead, ')
+          ..write('isMy: $isMy')
           ..write(')'))
         .toString();
   }
@@ -530,16 +572,18 @@ typedef $$MessageTableTableInsertCompanionBuilder = MessageTableCompanion
   drift.Value<int> id,
   required String content,
   required DateTime created,
-  required int userId,
+  required int companionId,
   required bool isRead,
+  required bool isMy,
 });
 typedef $$MessageTableTableUpdateCompanionBuilder = MessageTableCompanion
     Function({
   drift.Value<int> id,
   drift.Value<String> content,
   drift.Value<DateTime> created,
-  drift.Value<int> userId,
+  drift.Value<int> companionId,
   drift.Value<bool> isRead,
+  drift.Value<bool> isMy,
 });
 
 class $$MessageTableTableTableManager extends drift.RootTableManager<
@@ -565,29 +609,33 @@ class $$MessageTableTableTableManager extends drift.RootTableManager<
             drift.Value<int> id = const drift.Value.absent(),
             drift.Value<String> content = const drift.Value.absent(),
             drift.Value<DateTime> created = const drift.Value.absent(),
-            drift.Value<int> userId = const drift.Value.absent(),
+            drift.Value<int> companionId = const drift.Value.absent(),
             drift.Value<bool> isRead = const drift.Value.absent(),
+            drift.Value<bool> isMy = const drift.Value.absent(),
           }) =>
               MessageTableCompanion(
             id: id,
             content: content,
             created: created,
-            userId: userId,
+            companionId: companionId,
             isRead: isRead,
+            isMy: isMy,
           ),
           getInsertCompanionBuilder: ({
             drift.Value<int> id = const drift.Value.absent(),
             required String content,
             required DateTime created,
-            required int userId,
+            required int companionId,
             required bool isRead,
+            required bool isMy,
           }) =>
               MessageTableCompanion.insert(
             id: id,
             content: content,
             created: created,
-            userId: userId,
+            companionId: companionId,
             isRead: isRead,
+            isMy: isMy,
           ),
         ));
 }
@@ -623,13 +671,18 @@ class $$MessageTableTableFilterComposer
       builder: (column, joinBuilders) =>
           drift.ColumnFilters(column, joinBuilders: joinBuilders));
 
-  drift.ColumnFilters<int> get userId => $state.composableBuilder(
-      column: $state.table.userId,
+  drift.ColumnFilters<int> get companionId => $state.composableBuilder(
+      column: $state.table.companionId,
       builder: (column, joinBuilders) =>
           drift.ColumnFilters(column, joinBuilders: joinBuilders));
 
   drift.ColumnFilters<bool> get isRead => $state.composableBuilder(
       column: $state.table.isRead,
+      builder: (column, joinBuilders) =>
+          drift.ColumnFilters(column, joinBuilders: joinBuilders));
+
+  drift.ColumnFilters<bool> get isMy => $state.composableBuilder(
+      column: $state.table.isMy,
       builder: (column, joinBuilders) =>
           drift.ColumnFilters(column, joinBuilders: joinBuilders));
 }
@@ -652,13 +705,18 @@ class $$MessageTableTableOrderingComposer
       builder: (column, joinBuilders) =>
           drift.ColumnOrderings(column, joinBuilders: joinBuilders));
 
-  drift.ColumnOrderings<int> get userId => $state.composableBuilder(
-      column: $state.table.userId,
+  drift.ColumnOrderings<int> get companionId => $state.composableBuilder(
+      column: $state.table.companionId,
       builder: (column, joinBuilders) =>
           drift.ColumnOrderings(column, joinBuilders: joinBuilders));
 
   drift.ColumnOrderings<bool> get isRead => $state.composableBuilder(
       column: $state.table.isRead,
+      builder: (column, joinBuilders) =>
+          drift.ColumnOrderings(column, joinBuilders: joinBuilders));
+
+  drift.ColumnOrderings<bool> get isMy => $state.composableBuilder(
+      column: $state.table.isMy,
       builder: (column, joinBuilders) =>
           drift.ColumnOrderings(column, joinBuilders: joinBuilders));
 }

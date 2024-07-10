@@ -19,6 +19,7 @@ mixin _$MessageListState {
   bool get isLoading => throw _privateConstructorUsedError;
   bool get isError => throw _privateConstructorUsedError;
   String get errorMessage => throw _privateConstructorUsedError;
+  int? get companionId => throw _privateConstructorUsedError;
   List<Message> get messages => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -36,6 +37,7 @@ abstract class $MessageListStateCopyWith<$Res> {
       {bool isLoading,
       bool isError,
       String errorMessage,
+      int? companionId,
       List<Message> messages});
 }
 
@@ -55,6 +57,7 @@ class _$MessageListStateCopyWithImpl<$Res, $Val extends MessageListState>
     Object? isLoading = null,
     Object? isError = null,
     Object? errorMessage = null,
+    Object? companionId = freezed,
     Object? messages = null,
   }) {
     return _then(_value.copyWith(
@@ -70,6 +73,10 @@ class _$MessageListStateCopyWithImpl<$Res, $Val extends MessageListState>
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
+      companionId: freezed == companionId
+          ? _value.companionId
+          : companionId // ignore: cast_nullable_to_non_nullable
+              as int?,
       messages: null == messages
           ? _value.messages
           : messages // ignore: cast_nullable_to_non_nullable
@@ -90,6 +97,7 @@ abstract class _$$MessageListStateImplCopyWith<$Res>
       {bool isLoading,
       bool isError,
       String errorMessage,
+      int? companionId,
       List<Message> messages});
 }
 
@@ -107,6 +115,7 @@ class __$$MessageListStateImplCopyWithImpl<$Res>
     Object? isLoading = null,
     Object? isError = null,
     Object? errorMessage = null,
+    Object? companionId = freezed,
     Object? messages = null,
   }) {
     return _then(_$MessageListStateImpl(
@@ -122,6 +131,10 @@ class __$$MessageListStateImplCopyWithImpl<$Res>
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
               as String,
+      freezed == companionId
+          ? _value.companionId
+          : companionId // ignore: cast_nullable_to_non_nullable
+              as int?,
       null == messages
           ? _value._messages
           : messages // ignore: cast_nullable_to_non_nullable
@@ -137,6 +150,7 @@ class _$MessageListStateImpl implements _MessageListState {
       [this.isLoading = false,
       this.isError = false,
       this.errorMessage = '',
+      this.companionId,
       final List<Message> messages = const []])
       : _messages = messages;
 
@@ -149,6 +163,8 @@ class _$MessageListStateImpl implements _MessageListState {
   @override
   @JsonKey()
   final String errorMessage;
+  @override
+  final int? companionId;
   final List<Message> _messages;
   @override
   @JsonKey()
@@ -160,7 +176,7 @@ class _$MessageListStateImpl implements _MessageListState {
 
   @override
   String toString() {
-    return 'MessageListState(isLoading: $isLoading, isError: $isError, errorMessage: $errorMessage, messages: $messages)';
+    return 'MessageListState(isLoading: $isLoading, isError: $isError, errorMessage: $errorMessage, companionId: $companionId, messages: $messages)';
   }
 
   @override
@@ -173,12 +189,14 @@ class _$MessageListStateImpl implements _MessageListState {
             (identical(other.isError, isError) || other.isError == isError) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage) &&
+            (identical(other.companionId, companionId) ||
+                other.companionId == companionId) &&
             const DeepCollectionEquality().equals(other._messages, _messages));
   }
 
   @override
   int get hashCode => Object.hash(runtimeType, isLoading, isError, errorMessage,
-      const DeepCollectionEquality().hash(_messages));
+      companionId, const DeepCollectionEquality().hash(_messages));
 
   @JsonKey(ignore: true)
   @override
@@ -193,6 +211,7 @@ abstract class _MessageListState implements MessageListState {
       [final bool isLoading,
       final bool isError,
       final String errorMessage,
+      final int? companionId,
       final List<Message> messages]) = _$MessageListStateImpl;
 
   @override
@@ -201,6 +220,8 @@ abstract class _MessageListState implements MessageListState {
   bool get isError;
   @override
   String get errorMessage;
+  @override
+  int? get companionId;
   @override
   List<Message> get messages;
   @override

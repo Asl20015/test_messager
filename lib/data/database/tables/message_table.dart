@@ -7,7 +7,9 @@ class MessageTable extends Table {
 
   DateTimeColumn get created => dateTime()();
 
-  IntColumn get userId => integer()();
+  IntColumn get companionId => integer()();
 
   BoolColumn get isRead => boolean()();
+
+  BoolColumn get isMy => boolean()();
 }

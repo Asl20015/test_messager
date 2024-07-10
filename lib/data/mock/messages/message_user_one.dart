@@ -2,13 +2,12 @@ import 'package:test_messager/data/mock/messages/data_message.dart';
 import 'package:test_messager/data/models/message.dart';
 
 class DataMessageUserOne implements DataMessage {
-
   @override
   final messages = [
     Message(
       id: 431431,
       content: 'Привет',
-      userId: -1,
+      companionId: 1,
       isRead: true,
       created: DateTime(
         2024,
@@ -17,12 +16,14 @@ class DataMessageUserOne implements DataMessage {
         14,
         55,
       ),
+      isMy: true,
     ),
     Message(
       id: 6645344,
       content: 'Привет',
-      userId: 1,
+      companionId: 1,
       isRead: true,
+      isMy: false,
       created: DateTime(
         2024,
         07,
@@ -34,8 +35,9 @@ class DataMessageUserOne implements DataMessage {
     Message(
       id: 4325766,
       content: 'Как дела?',
-      userId: -1,
+      companionId: 1,
       isRead: true,
+      isMy: true,
       created: DateTime(
         2024,
         07,
@@ -47,8 +49,9 @@ class DataMessageUserOne implements DataMessage {
     Message(
       id: 767554,
       content: 'Да все хорошо, у тебя как?',
-      userId: 1,
+      companionId: 1,
       isRead: true,
+      isMy: false,
       created: DateTime(
         2024,
         07,
@@ -60,8 +63,9 @@ class DataMessageUserOne implements DataMessage {
     Message(
       id: 134254657,
       content: 'Сорри, что вчера не ответил занят был',
-      userId: -1,
+      companionId: 1,
       isRead: true,
+      isMy: true,
       created: DateTime(
         2024,
         07,
@@ -73,8 +77,9 @@ class DataMessageUserOne implements DataMessage {
     Message(
       id: 676453,
       content: 'Да ничего',
-      userId: 1,
+      companionId: 1,
       isRead: true,
+      isMy: false,
       created: DateTime(
         2024,
         07,

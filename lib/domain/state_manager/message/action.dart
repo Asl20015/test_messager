@@ -10,8 +10,12 @@ class LoadMessageListAction extends MessageListAction {
 
 class ShowMessageListAction extends MessageListAction {
   final List<Message> messages;
+  final int userId;
 
-  ShowMessageListAction({required this.messages});
+  ShowMessageListAction({
+    required this.messages,
+    required this.userId,
+  });
 }
 
 class ErrorMessageListAction extends MessageListAction {

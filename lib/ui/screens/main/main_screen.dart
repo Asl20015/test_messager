@@ -48,6 +48,36 @@ class _MainScreenState extends State<MainScreen> {
               converter: (store) => store.state.chatListState,
               builder: (context, state) {
                 if (state.isLoading) return const Center(child: CircularProgressIndicator());
+
+                if (state.isError) {
+                  return Center(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.error_outline,
+                          size: 16,
+                          color: Colors.red,
+                        ),
+                        const SizedBox(width: 8),
+                        Text(
+                          state.errorMessage,
+                          style: AppTextStyle.text1,
+                        ),
+                      ],
+                    ),
+                  );
+                }
+
+                if (state.chats.isEmpty) {
+                  return const Center(
+                    child: Text(
+                      'У вас нет чатов',
+                      style: AppTextStyle.text1,
+                    ),
+                  );
+                }
+
                 return RefreshIndicator(
                   onRefresh: onRefresh,
                   child: ListView(

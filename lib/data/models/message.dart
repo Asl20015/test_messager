@@ -1,6 +1,7 @@
 class Message {
   final int id;
-  final int userId;
+  final int companionId;
+  final bool isMy;
   final String content;
   final List<String>? files;
   final bool isRead;
@@ -8,7 +9,8 @@ class Message {
 
   Message({
     required this.id,
-    required this.userId,
+    required this.companionId,
+    required this.isMy,
     required this.content,
     this.files,
     required this.isRead,

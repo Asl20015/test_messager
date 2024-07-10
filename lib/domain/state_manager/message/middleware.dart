@@ -14,7 +14,11 @@ class MessageMiddleware implements MiddlewareClass<AppState> {
     if (action is LoadMessageListAction) {
       Future(() async {
         final messages = await messageRepository.getMessageOfChat(userId: action.userId);
-        store.dispatch(ShowMessageListAction(messages: messages));
+        messages.sort((a, b) => b.created.compareTo(a.created));
+        store.dispatch(ShowMessageListAction(
+          messages: messages,
+          userId: action.userId,
+        ));
       });
     }
 

@@ -35,7 +35,8 @@ class AppDataBase extends _$AppDataBase {
   Future<void> initMockMessage({required DataMessage mock}) async {
     for (var message in mock.messages) {
       final companion = MessageTableCompanion(
-        userId: drift.Value(message.userId),
+        companionId: drift.Value(message.companionId),
+        isMy: drift.Value(message.isMy),
         isRead: const drift.Value(true),
         created: drift.Value(message.created),
         content: drift.Value(message.content),
@@ -54,7 +55,11 @@ class AppDataBase extends _$AppDataBase {
   }
 
   Future<List<Message>> getListMessage({required int userId}) async {
-    final messages = await (select(messageTable)..where((tbl) => tbl.userId.isIn([userId]))).get();
+    final messages = await (select(messageTable)
+          ..where(
+            (tbl) => tbl.companionId.isIn([userId]),
+          ))
+        .get();
     List<Message> results = [];
     for (var message in messages) {
       final dto = await getMessage(message: message);
@@ -64,7 +69,8 @@ class AppDataBase extends _$AppDataBase {
   }
 
   Future<Message?> getLastMessage({required int userId}) async {
-    final messages = await (select(messageTable)..where((tbl) => tbl.userId.isIn([userId]))).get();
+    final messages =
+        await (select(messageTable)..where((tbl) => tbl.companionId.isIn([userId]))).get();
     if (messages.isEmpty) return null;
     final dto = await getMessage(message: messages.last);
     return dto;
@@ -79,7 +85,8 @@ class AppDataBase extends _$AppDataBase {
         .get();
     return Message(
       id: message.id,
-      userId: message.userId,
+      isMy: message.isMy,
+      companionId: message.companionId,
       content: message.content,
       isRead: message.isRead,
       created: message.created,

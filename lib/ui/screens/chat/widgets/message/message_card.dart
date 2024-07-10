@@ -27,8 +27,6 @@ class MessageCard extends StatelessWidget {
         bottomRight: Radius.circular(21),
       );
 
-  bool get isMy => message.userId == -1;
-
   bool get haveFiles => (message.files ?? []).isNotEmpty;
 
   @override
@@ -36,10 +34,10 @@ class MessageCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 20),
       child: Row(
-        mainAxisAlignment: isMy ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: message.isMy ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          if (!isMy)
+          if (!message.isMy)
             Transform.flip(
               flipX: true,
               child: SvgPicture.asset(
@@ -59,8 +57,8 @@ class MessageCard extends StatelessWidget {
               bottom: 12,
             ),
             decoration: BoxDecoration(
-              borderRadius: isMy ? borderForMyMessage : borderForUserMessage,
-              color: isMy ? AppColors.primary : AppColors.greyRaw,
+              borderRadius: message.isMy ? borderForMyMessage : borderForUserMessage,
+              color: message.isMy ? AppColors.primary : AppColors.greyRaw,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -78,7 +76,7 @@ class MessageCard extends StatelessWidget {
                       Text(
                         message.content,
                         style: AppTextStyle.text2.copyWith(
-                          color: isMy ? AppColors.greenDark : AppColors.greyDark,
+                          color: message.isMy ? AppColors.greenDark : AppColors.greyDark,
                         ),
                       ),
                       Row(
@@ -89,11 +87,11 @@ class MessageCard extends StatelessWidget {
                           Text(
                             Convert.timeConvert(message.created),
                             style: AppTextStyle.text3.copyWith(
-                              color: (isMy ? AppColors.greenDark : AppColors.greyDark)
+                              color: (message.isMy ? AppColors.greenDark : AppColors.greyDark)
                                   .withOpacity(0.8),
                             ),
                           ),
-                          if (isMy) ...[
+                          if (message.isMy) ...[
                             const SizedBox(width: 5),
                             Padding(
                               padding: const EdgeInsets.only(bottom: 5),
@@ -114,7 +112,7 @@ class MessageCard extends StatelessWidget {
               ],
             ),
           ),
-          if (isMy)
+          if (message.isMy)
             SvgPicture.asset(
               AppIcons.suffixMessage,
               colorFilter: const ColorFilter.mode(
