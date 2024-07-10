@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_messager/data/models/user.dart';
-import 'package:test_messager/ui/screens/chat_screen.dart';
+import 'package:test_messager/ui/screens/chat/chat_screen.dart';
 
 class AppRouter {
   static const String chat = '/chat';

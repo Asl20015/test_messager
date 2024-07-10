@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:test_messager/data/data/data_users.dart';
 import 'package:test_messager/ui/resurses/colors.dart';
 import 'package:test_messager/ui/resurses/icons.dart';
 import 'package:test_messager/ui/resurses/text.dart';
-import 'package:test_messager/ui/widgets/user_card.dart';
+import 'package:test_messager/ui/widgets/chat_card.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -15,11 +14,7 @@ class MainScreen extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return [
-              const _Header(),
-            ];
-          },
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [const _Header()],
           body: Container(
             decoration: const BoxDecoration(
               border: Border(
@@ -32,7 +27,7 @@ class MainScreen extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               children: [
-                for (var user in DataUsers().users) UserCard(user: user),
+                for (var user in DataUsers().users) ChatCard(user: user),
               ],
             ),
           ),

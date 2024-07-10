@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:test_messager/domain/di/locator.dart';
 import 'package:test_messager/routes.dart';
 import 'package:test_messager/ui/resurses/theme.dart';
-import 'package:test_messager/ui/screens/main_screen.dart';
+import 'package:test_messager/ui/screens/main/main_screen.dart';
 
 void main() {
   final locator = LocatorService();

@@ -5,4 +5,5 @@ class AppIcons {
   static const clip = 'assets/icons/clip.svg';
   static const microphone = 'assets/icons/microphone.svg';
   static const search = 'assets/icons/search.svg';
+  static const send = 'assets/icons/send.svg';
 }
