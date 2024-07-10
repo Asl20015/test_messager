@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:test_messager/domain/di/get_it_service.dart';
 import 'package:test_messager/ui/resurses/text.dart';
@@ -31,10 +33,9 @@ class MessageImagesCard extends StatelessWidget {
                         bottomLeft: const Radius.circular(8),
                         bottomRight: Radius.circular(files.length > 1 ? 4 : 8),
                       ),
-                child: Image.network(
-                  'https://cdn.tripster.ru/thumbs2/f5a8c1fe-b128-11ed-9e63-2e5ef03bee8d.1220x600.jpeg',
+                child: _Image(
+                  file: files.first,
                   height: files.length > 2 ? 154 : 150,
-                  fit: BoxFit.cover,
                 ),
               ),
             ),
@@ -50,10 +51,9 @@ class MessageImagesCard extends StatelessWidget {
                         bottomLeft: const Radius.circular(4),
                         bottomRight: Radius.circular(files.length > 2 ? 4 : 8),
                       ),
-                      child: Image.network(
-                        'https://cdn.tripster.ru/thumbs2/f5a8c1fe-b128-11ed-9e63-2e5ef03bee8d.1220x600.jpeg',
+                      child: _Image(
+                        file: files[1],
                         height: files.length == 2 ? 150 : 75,
-                        fit: BoxFit.cover,
                       ),
                     ),
                     if (files.length > 2) ...[
@@ -67,10 +67,9 @@ class MessageImagesCard extends StatelessWidget {
                               bottomLeft: Radius.circular(4),
                               bottomRight: Radius.circular(8),
                             ),
-                            child: Image.network(
-                              'https://cdn.tripster.ru/thumbs2/f5a8c1fe-b128-11ed-9e63-2e5ef03bee8d.1220x600.jpeg',
+                            child: _Image(
+                              file: files[2],
                               height: 75,
-                              fit: BoxFit.cover,
                             ),
                           ),
                           if (files.length > 3)
@@ -105,6 +104,35 @@ class MessageImagesCard extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _Image extends StatelessWidget {
+  final String file;
+  final double height;
+
+  const _Image({
+    super.key,
+    required this.file,
+    required this.height,
+  });
+
+  bool get isFile => !file.startsWith('http');
+
+  @override
+  Widget build(BuildContext context) {
+    if (isFile) {
+      return Image.file(
+        File(file),
+        height: height,
+        fit: BoxFit.cover,
+      );
+    }
+    return Image.network(
+      file,
+      height: height,
+      fit: BoxFit.cover,
     );
   }
 }

@@ -8,6 +8,7 @@ import 'package:path/path.dart' as p;
 import 'package:drift/drift.dart' as drift;
 import 'package:test_messager/data/database/tables/files_table.dart';
 import 'package:test_messager/data/database/tables/message_table.dart';
+import 'package:test_messager/data/mock/messages/data_message.dart';
 import 'package:test_messager/data/models/message.dart';
 
 part 'database.g.dart';
@@ -31,6 +32,27 @@ class AppDataBase extends _$AppDataBase {
   int get schemaVersion => 1;
 
   //Message
+  Future<void> initMockMessage({required DataMessage mock}) async {
+    for (var message in mock.messages) {
+      final companion = MessageTableCompanion(
+        userId: drift.Value(message.userId),
+        isRead: const drift.Value(true),
+        created: drift.Value(message.created),
+        content: drift.Value(message.content),
+      );
+      final id = await into(messageTable).insert(companion);
+      if ((message.files ?? []).isNotEmpty) {
+        for (var file in message.files!) {
+          final fileCompanion = FilesTableCompanion(
+            file: drift.Value(file),
+            messageId: drift.Value(id),
+          );
+          await into(filesTable).insert(fileCompanion);
+        }
+      }
+    }
+  }
+
   Future<List<Message>> getListMessage({required int userId}) async {
     final messages = await (select(messageTable)..where((tbl) => tbl.userId.isIn([userId]))).get();
     List<Message> results = [];
@@ -57,6 +79,7 @@ class AppDataBase extends _$AppDataBase {
         .get();
     return Message(
       id: message.id,
+      userId: message.userId,
       content: message.content,
       isRead: message.isRead,
       created: message.created,

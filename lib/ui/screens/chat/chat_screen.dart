@@ -51,6 +51,7 @@ class _ChatScreenState extends State<ChatScreen> {
               messages: [
                 Message(
                   id: 1,
+                  userId: -1,
                   isRead: true,
                   content: 'lfer lr,elg ,rl,k,g ,rl,g lr,gllrflrgprlgplrglgr',
                   created: DateTime.now(),
@@ -65,27 +66,6 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
               ],
               date: DateTime.now(),
-            ),
-          ),
-          MessageGroupCard(
-            messageGroup: MessageGroup(
-              messages: [
-                Message(
-                  id: 1,
-                  isRead: false,
-                  content: 'Привет',
-                  files: ['ds', 'd', 'd'],
-                  created: DateTime.now(),
-                ),
-                Message(
-                  id: 1,
-                  userId: 2,
-                  isRead: true,
-                  content: 'Привет',
-                  created: DateTime.now(),
-                ),
-              ],
-              date: DateTime.now().add(const Duration(days: -1)),
             ),
           ),
         ],

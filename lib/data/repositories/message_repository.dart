@@ -1,6 +1,10 @@
 import 'package:test_messager/data/database/database.dart';
+import 'package:test_messager/data/mock/messages/message_user_one.dart';
+import 'package:test_messager/data/mock/messages/message_user_three.dart';
+import 'package:test_messager/data/mock/messages/message_user_two.dart';
 import 'package:test_messager/data/models/message.dart';
 import 'package:test_messager/domain/repositories/message_repository.dart';
+import 'package:test_messager/domain/services/shared_preferences_service.dart';
 
 class LocalMessageRepository implements MessageRepository {
   final AppDataBase database;
@@ -13,7 +17,14 @@ class LocalMessageRepository implements MessageRepository {
   }
 
   @override
-  Future<Message?> getLastMessage({required int userId}) {
+  Future<Message?> getLastMessage({required int userId}) async {
+    final isMessageInit = await SharedPreferencesService.getInitMessage();
+    if (!isMessageInit) {
+      await database.initMockMessage(mock: DataMessageUserOne());
+      await database.initMockMessage(mock: DataMessageUserTwo());
+      await database.initMockMessage(mock: DataMessageUserThree());
+      await SharedPreferencesService.setInitMessage();
+    }
     return database.getLastMessage(userId: userId);
   }
 }

@@ -1,5 +1,5 @@
 import 'package:redux/redux.dart';
-import 'package:test_messager/data/data/data_users.dart';
+import 'package:test_messager/data/mock/data_users.dart';
 import 'package:test_messager/data/models/chat.dart';
 import 'package:test_messager/domain/repositories/message_repository.dart';
 import 'package:test_messager/domain/state_manager/chat/action.dart';

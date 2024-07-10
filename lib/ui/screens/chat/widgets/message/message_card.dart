@@ -27,7 +27,7 @@ class MessageCard extends StatelessWidget {
         bottomRight: Radius.circular(21),
       );
 
-  bool get isMy => message.userId == null;
+  bool get isMy => message.userId == -1;
 
   bool get haveFiles => (message.files ?? []).isNotEmpty;
 

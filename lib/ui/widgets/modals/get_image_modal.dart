@@ -38,12 +38,12 @@ class GetImageModal extends StatelessWidget {
             title: 'Галерея',
             icon: AppIcons.gallery,
           ),
-          const Divider(color: AppColors.greyRaw),
-          _Container(
-            onTap: getFile,
-            title: 'Файлы',
-            icon: AppIcons.file,
-          ),
+          //const Divider(color: AppColors.greyRaw),
+          //_Container(
+          //  onTap: getFile,
+          //  title: 'Файлы',
+          //  icon: AppIcons.file,
+          //),
         ],
       ),
     );
