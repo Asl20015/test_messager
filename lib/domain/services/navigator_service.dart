@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:test_messager/data/models/user.dart';
 import 'package:test_messager/routes.dart';
@@ -13,6 +15,13 @@ class NavigatorService {
     navigatorKey.currentState!.pushNamed(
       AppRouter.chat,
       arguments: AppRouterArguments(user: user),
+    );
+  }
+
+  void onImage({required File file}) {
+    navigatorKey.currentState!.pushNamed(
+      AppRouter.image,
+      arguments: AppRouterArguments(file: file),
     );
   }
 }

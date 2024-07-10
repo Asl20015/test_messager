@@ -5,7 +5,12 @@ import 'package:test_messager/ui/resurses/colors.dart';
 import 'package:test_messager/ui/resurses/icons.dart';
 
 class LeftButton extends StatelessWidget {
-  const LeftButton({super.key});
+  final Color? color;
+
+  const LeftButton({
+    super.key,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,8 +25,8 @@ class LeftButton extends StatelessWidget {
             child: SvgPicture.asset(
               AppIcons.arrowLeft,
               height: 18,
-              colorFilter: const ColorFilter.mode(
-                AppColors.greyDark,
+              colorFilter: ColorFilter.mode(
+                color ?? AppColors.greyDark,
                 BlendMode.srcIn,
               ),
             ),
