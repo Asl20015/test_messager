@@ -14,7 +14,10 @@ class AppRouter {
 
     final routes = <String, WidgetBuilder>{
       AppRouter.chat: (BuildContext context) => ChatScreen(user: args!.user!),
-      AppRouter.image: (BuildContext context) => ImageScreen(file: args!.file!),
+      AppRouter.image: (BuildContext context) => ImageScreen(
+            files: args!.files ?? [],
+            urls: args.urls ?? [],
+          ),
     };
 
     WidgetBuilder? builder = routes[settings.name!];
@@ -25,9 +28,13 @@ class AppRouter {
 class AppRouterArguments {
   final User? user;
   final File? file;
+  final List<File>? files;
+  final List<String>? urls;
 
   AppRouterArguments({
     this.user,
     this.file,
+    this.files,
+    this.urls,
   });
 }

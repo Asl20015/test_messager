@@ -18,10 +18,17 @@ class NavigatorService {
     );
   }
 
-  void onImage({required File file}) {
+  void onImage({
+    List<File>? files,
+    List<String>? urls,
+  }) {
+    if (files == null && urls == null) return;
     navigatorKey.currentState!.pushNamed(
       AppRouter.image,
-      arguments: AppRouterArguments(file: file),
+      arguments: AppRouterArguments(
+        files: files,
+        urls: urls,
+      ),
     );
   }
 }

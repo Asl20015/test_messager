@@ -1,16 +1,16 @@
 class Message {
   final int id;
-  final int userId;
+  final int? userId;
   final String content;
-  final String? file;
+  final List<String>? files;
   final bool isRead;
-  final String created;
+  final DateTime created;
 
   Message({
     required this.id,
-    required this.userId,
+    this.userId,
     required this.content,
-    this.file,
+    this.files,
     required this.isRead,
     required this.created,
   });

@@ -6,4 +6,8 @@ class AppIcons {
   static const microphone = 'assets/icons/microphone.svg';
   static const search = 'assets/icons/search.svg';
   static const send = 'assets/icons/send.svg';
+  static const gallery = 'assets/icons/gallery.svg';
+  static const camera = 'assets/icons/camera.svg';
+  static const file = 'assets/icons/file.svg';
+  static const suffixMessage = 'assets/icons/sufix_message.svg';
 }

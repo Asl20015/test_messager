@@ -63,7 +63,7 @@ class _Image extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => getItService.navigatorService.onImage(file: file),
+      onTap: () => getItService.navigatorService.onImage(files: [file]),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(12),
         child: Image.file(
