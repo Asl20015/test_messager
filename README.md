@@ -1,16 +1,23 @@
-# test_messager
+# Test Messager
 
-A new Flutter project.
+Приложение сделано в рамках тестового задания
 
-## Getting Started
+## Resources
 
-This project is a starting point for a Flutter application.
+- [Техническое задание](https://docs.google.com/document/d/1rlE_qtdHIMGg0iQPQGDX4PVHG1AbKDFPLl7Lric_8_4/edit?usp=sharing)
+- [Дизайн](https://www.figma.com/file/sZlbHjGr8gXuEnsXnbDunV/Untitled?type=design&node-id=0-1&mode=design&t=u3BDAompjyxy3DqU-0)
+- [Скачать APK](https://github.com/Asl20015/test_messager/tree/main/assets/apk/messager.apk)
 
-A few resources to get you started if this is your first Flutter project:
+## Stack
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- DI (GetIt)
+- State manager (Redux)
+- DataBase (Drift)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Функции
+
+- Просмотр чатов
+- Просмотр чата
+- Отправка сообщений
+- Отправка изображений
+- Просмотр изображений

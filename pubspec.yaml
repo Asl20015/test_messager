@@ -30,10 +30,16 @@ dev_dependencies:
   drift_dev: ^2.2.0+1
   freezed: ^2.1.0+1
 
+flutter_icons:
+  image_path: "assets/logo/logo.png"
+  android: true
+  ios: true
+
 flutter:
   uses-material-design: true
   assets:
     - assets/icons/
+    - assets/logo/
   fonts:
     - family: Gilroy
       fonts:
